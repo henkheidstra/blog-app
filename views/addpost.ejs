@@ -1,0 +1,50 @@
+<%- include('partials/header'); -%>
+<br>
+<br>
+<div class="postcontent">
+  <div class="row">
+    <div class="col s4 m12">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title"><b>Title</b></span>
+          <output form="inputform" for="inputTitle"></output>
+          <p><br><br>BODY <br><br>(This is an example post and should've been updated live when you enter your input in the input fields below.)</p>
+          <output form="inputform" for="inputBody"></output>
+        </div>
+        <div class="card-action">
+        </div>
+     </div>
+    </div>
+  </div>
+
+<div class="row">
+    <form class="col s10" id="inputform" action="/addpost" method="post" autocomplete="on">
+        <div class="input-field col s12"><i class="material-icons prefix">title</i>
+          <!-- <div class="myTextInput">      </div> -->
+          <input class="titleInput" type="text" id="inputTitle" name="Title" />
+          <label for="icon_title">Title</label>
+        </div>
+        <div class="input-field col s12"><i class="material-icons prefix">message</i>
+          <textarea class="materialize-textarea" id="inputBody" type="text" action="/addpost" name="Body" method="post" autocomplete="on"  maxlength="250"></textarea>
+          <label for="icon_body">Body</label>
+          <button type="submit" onclick="postSuccess()">Add Post</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+<!--CODE TO MAKE DOUBLE INPUT POSSIBLE-->
+
+<script>
+//   $("#titleInput").keyup(function() {
+//     var text = $(this).val();
+//     text = processText(text);
+//     $("#titleOutput").val(text);
+// }); 
+
+    function postSuccess() {
+      alert("Succesfully added post!");
+    }
+    </script>
+
+<%- include('partials/footer'); -%>

@@ -1,0 +1,35 @@
+<%- include('partials/header'); -%>
+<br>
+<br>
+<div class="postcontent">
+    <%if (allposts.length > 0) { %>
+    <% for(let onepost of allposts) { %>
+       <div class="row">
+        <div class="col s4 m12">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title"><b><%=onepost.title%></b></span>
+              <p><br><br><%=onepost.body%></p>
+            </div>
+            <div class="card-action">
+              <a href="#">Remove</a>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+  </div>
+
+  <div class="noPostsFound">
+  <%if (allposts.length == 0) { %>
+    <p>No Posts found, you can add them by clicking Add Post in the navigation bar.</p>
+   <% } %>
+</div>
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</html>
+<%- include('partials/footer'); -%>
