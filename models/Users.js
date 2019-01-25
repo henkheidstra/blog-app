@@ -13,15 +13,16 @@ const connection = new Sequelize('blog-app', 'POSTGRES_USER', 'POSTGRES_PASSWORD
       idle: 10000
 }});
 
-// Define the Posts model.
-const Post = connection.define('posts', {
-    Title: Sequelize.STRING,
-    Body: Sequelize.TEXT
-  });
+// Define the Users model.
+const User = connection.define('User', {
+    Username: Sequelize.STRING,
+    Email: Sequelize.STRING,
+    Password: Sequelize.STRING
+});
 
-// Create table based on the Posts Model above.
+// Create table based on the User Model above.
 connection.sync({force:true})
     .then(() => console.log(`posts table has been created!`))
     .catch((error) => console.log(`couldn't create table, here is the error which occured: ${error}`));
 
-module.exports = Post;
+module.exports = User;
