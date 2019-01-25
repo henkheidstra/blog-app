@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 // sequelize setup
-const connection = new Sequelize('bulletinboard', 'POSTGRES_USER', 'POSTGRES_PASSWORD', {
+const connection = new Sequelize('blog-app', 'POSTGRES_USER', 'POSTGRES_PASSWORD', {
     host: 'localhost',
     dialect: 'postgres',
     operatorsAliases: false,
@@ -13,7 +13,7 @@ const connection = new Sequelize('bulletinboard', 'POSTGRES_USER', 'POSTGRES_PAS
       idle: 10000
 }});
 
-// Define the User model.
+// Define the Posts model.
 const Posts = connection.define('posts', {
     Title: Sequelize.STRING,
     Body: Sequelize.TEXT
