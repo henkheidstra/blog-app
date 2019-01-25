@@ -18,7 +18,7 @@ const express = require('express'),
     app = express(),
     ejs = require('ejs'),
     path = require('path'),
-    Posts = require('./models/Posts.js');
+    Posts = require('./models/Posts.js')
 
 const port = process.env.PORT || 3000;
 
@@ -123,32 +123,32 @@ app.route('/register')
             });
     });
 
-// Route for logging in
-// app.route('/login')
-//     .get(checkLoggedIn, (req, res) => {
-//         res.render('login');
-//     })
-//     .post((req, res) => {
-//         let username = req.body.username,
-//             password = req.body.password;
-//         console.log(`login username: ${username}`);
-//         console.log(`password username: ${password}`);
+// Route for logging in, checks if there is a user with that password, if correct, it will redirect to profile
+app.route('/login')
+    .get(checkLoggedIn, (req, res) => {
+        res.render('login');
+    })
+    .post((req, res) => {
+        let username = req.body.username,
+            password = req.body.password;
+        console.log(`login username: ${username}`);
+        console.log(`password username: ${password}`);
 
-//         User.findOne({
-//                 where: {
-//                     username: username,
-//                     password: password
-//                 }
-//             })
-//             .then((retrievedUser) => {
-//                 req.session.user = retrievedUser.dataValues;
-//                 res.redirect('/profile');
-//             })
-//             .catch((error) => {
-//                 console.log(`Something went wrong when logging in: ${error}`);
-//                 res.render('error');
-//             });
-//     });
+        User.findOne({
+                where: {
+                    username: username,
+                    password: password
+                }
+            })
+            .then((retrievedUser) => {
+                req.session.user = retrievedUser.dataValues;
+                res.redirect('/profile');
+            })
+            .catch((error) => {
+                console.log(`Something went wrong when logging in: ${error}`);
+                res.render('error');
+            });
+    });
 
 app.listen(port, () => console.log(`Got ears on ${port}`));
 

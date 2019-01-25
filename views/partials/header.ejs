@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> Bulletin Board </title>
-
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css'></link>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'></link>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Staatliches|Lato" rel="stylesheet"></link>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.css" rel="stylesheet"></link>
     <link rel='stylesheet' href='/public/css/style.css' type='text/css'></link>
 </head>
 
@@ -17,17 +19,36 @@
     <nav>
     <div class="container">
       <div class="nav-wrapper"> blog application
-        <ul class="right hide-on-med-and-down" id="nav-mobile">
+        <ul class="right hide-on-med-and-down">
           <li><a href="/"><i class="large material-icons left">home</i>Home</a></li>
-          <li><a href="/allposts"><i class="large material-icons left">comment</i>Posts</a></li>
+          <li><a href="#" data-activates="drop-menu" class="dropdown-button">Posts</a></li>
           <li><a href="addpost"><i class="large material-icons left">add</i>add post</a></li>
-          <li><a href="/register"><i class="medium material-icons left"></i>login/register</a></li>
+          <!-- <li><a href="/register"><i class="medium material-icons left"></i>login/register</a></li> -->
+          <li><a id="login" href="#">Login/register</a></li>
           <!-- <li><a href="#"><i class="large material-icons left">search</i>search</a></li> -->
         </ul>
       </div>
     </div>
+
+    <!-- Login menu that shows up when clicking "Login/register" -->
+    <div id="login-form" class="webui-popover-content">
+        <form action="/login" method="post">
+            <div class="input-field">
+                <input type="text" placeholder="username">
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="password">
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Login
+            </button>         <a class="registerHere" href="register">Or Register</a>
+        </form>
+
+    </div>        
+    <ul class="dropdown-content" id="drop-menu">
+        <li><a href="#">Add Post</a></li>
+        <li><a href="#">User's Posts</a></li> 
+        <li><a href="#">All Posts</a></li>
+       </ul>
+
+    </body>
   </nav>
-
-
-
-
