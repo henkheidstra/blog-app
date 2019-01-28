@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const Comment = require('./comment');
 
 // sequelize setup
 const connection = new Sequelize('blog-app', 'POSTGRES_USER', 'POSTGRES_PASSWORD', {
