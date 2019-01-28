@@ -18,7 +18,7 @@ const express = require('express'),
     app = express(),
     ejs = require('ejs'),
     path = require('path'),
-    Posts = require('./models/Posts.js')
+    Posts = require('./models/Post.js')
 
 const port = process.env.PORT || 3000;
 

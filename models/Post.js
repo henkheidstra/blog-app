@@ -14,7 +14,7 @@ const connection = new Sequelize('blog-app', 'POSTGRES_USER', 'POSTGRES_PASSWORD
 }});
 
 // Define the Posts model.
-const Posts = connection.define('posts', {
+const Post = connection.define('posts', {
     Title: Sequelize.STRING,
     Body: Sequelize.TEXT
   });
@@ -24,4 +24,4 @@ connection.sync({force:true})
     .then(() => console.log(`posts table has been created!`))
     .catch((error) => console.log(`couldn't create table, here is the error which occured: ${error}`));
 
-module.exports = Posts;
+module.exports = Post;
