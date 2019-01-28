@@ -18,8 +18,7 @@ const express = require('express'),
     app = express(),
     ejs = require('ejs'),
     path = require('path'),
-    Post = require('./models/Posts.js'),
-    User = require('./models/Users.js')
+    Posts = require('./models/Posts.js');
 
 const port = process.env.PORT || 3000;
 
@@ -56,15 +55,12 @@ app.get('/addpost', (req, res) => {
   res.render('addpost')});
 
 // sync Message
-Post.sync
-
-// sync Users
-User.sync
+Posts.sync
 
 // create a route for posting a post to index from addpost
 app.post('/addpost', (req, res) => {
       console.log(req.body)
-        Post.create({
+        Posts.create({
                 Title: req.body.Title,
                 Body: req.body.Body
             })
@@ -79,7 +75,7 @@ app.post('/addpost', (req, res) => {
 
 // GET method to getting all the posts on the index page
     app.get('/allposts', (req, res) => {
-        Post.findAll().then((retrievedPostsArray) => {
+        Posts.findAll().then((retrievedPostsArray) => {
             let dataRetrievedPostsArray = retrievedPostsArray.map((retrievedPosts) => {
                 return {
                     title: retrievedPosts.dataValues.Title,
@@ -113,9 +109,9 @@ app.route('/register')
     })
     .post((req, res) => {
         User.create({
-                Username: req.body.username,
-                Email: req.body.email,
-                Password: req.body.password
+                username: req.body.username,
+                email: req.body.email,
+                password: req.body.password
             })
             .then((retrievedUser) => {
                 req.session.user = retrievedUser.dataValues;
