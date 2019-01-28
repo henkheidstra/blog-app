@@ -16,7 +16,7 @@ const connection = new Sequelize('blog-app', 'POSTGRES_USER', 'POSTGRES_PASSWORD
 }});
 
 // Define the User model.
-const User = connection.define('users', {
+const User = connection.define('User', {
   username: Sequelize.STRING,
 	password: Sequelize.STRING
 });
@@ -27,9 +27,9 @@ Post.belongsTo(User);
 User.hasMany(Comment);
 Comment.belongsTo(User);
 
-  // Create table based on the User Model above.
+// Create table based on the User Model above.
 connection.sync({force:true})
-.then(() => console.log(`posts table has been created!`))
+.then(() => console.log(`Users table has been created!`))
 .catch((error) => console.log(`couldn't create table, here is the error which occured: ${error}`));
 
 module.exports = User;
