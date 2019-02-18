@@ -18,8 +18,11 @@ const express = require('express'),
     app = express(),
     ejs = require('ejs'),
     path = require('path'),
-    Post = require('./models/Post.js'),
-    User = require('./models/User.js')
+    Models = require('./models/Models.js'),
+    User = Models.User,
+    Post = Models.Post,
+    Comment = Models.Comment,
+    bcrypt = require('bcrypt');
 
 const port = process.env.PORT || 3000;
 
@@ -33,7 +36,9 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(cookieSession({
     name: 'userCookie',
-    secret: 'secretSignature'
+    secret: 'secretSignature',
+    resave: false,
+    saveUninitialized: false
 }));
 
 // set view engine
@@ -94,6 +99,20 @@ app.post('/addpost', (req, res) => {
     });
 
 // Setup middleware that checks if user is logged in and redirects to their profile
+// let checkLoggedIn = (req, res, next) => {
+//     console.log(`This is the userCookie: ${req.cookies.userCookie}`);
+//     console.log(`This is the user: ${req.session.user}`);
+
+//     if (req.session.user && req.cookies.userCookie) {
+//         console.log('checkLoggedIn found that user was already logged in.');
+//         res.redirect('/profile');
+//     } else {
+//         console.log('checkLoggedIn found that user is new here.');
+//         next();
+//     }
+// };
+
+// Setup middleware that checks if user is logged in and redirects to their profile
 let checkLoggedIn = (req, res, next) => {
     if (req.cookies.userCookie && req.session.user) {
         console.log('checkLoggedIn found that user was already logged in.');
@@ -103,8 +122,11 @@ let checkLoggedIn = (req, res, next) => {
     next();
 };
 
+
 // Render profile page
 app.get('/profile', (req, res) => {
+    console.log('cookie id is: ', req.cookies.userCookie)
+    console.log(req.session.user)
     if (req.session.user && req.cookies.userCookie) {
       res.render('profile', {
         user: req.session.user
@@ -160,6 +182,17 @@ app.route('/login')
                 res.render('error');
             });
     });
+
+// Route for logging out, clear the cookie
+app.get('/logout', (req, res) => {
+    if (req.session.user && req.cookies.userCookie) {
+        res.clearCookie('userCookie');
+        console.log('COOKIE HAS BEEN DELETED');
+        res.redirect('/');
+    } else {
+        res.redirect('/');
+    }
+});
 
 app.listen(port, () => console.log(`Got ears on ${port}`));
 

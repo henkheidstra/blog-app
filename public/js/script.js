@@ -1,3 +1,2 @@
  $('#login').webuiPopover({url:'#login-form'});
-
- $(".dropdown-button").dropdown();
+ $('#search').webuiPopover({url:'#search-form'});
