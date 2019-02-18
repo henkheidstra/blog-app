@@ -28,7 +28,7 @@ const port = process.env.PORT || 3000;
 
 // middleware
 app.use(express.json());
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(express.urlencoded({
     extended: true
 }));
@@ -99,34 +99,23 @@ app.post('/addpost', (req, res) => {
     });
 
 // Setup middleware that checks if user is logged in and redirects to their profile
-// let checkLoggedIn = (req, res, next) => {
-//     console.log(`This is the userCookie: ${req.cookies.userCookie}`);
-//     console.log(`This is the user: ${req.session.user}`);
-
-//     if (req.session.user && req.cookies.userCookie) {
-//         console.log('checkLoggedIn found that user was already logged in.');
-//         res.redirect('/profile');
-//     } else {
-//         console.log('checkLoggedIn found that user is new here.');
-//         next();
-//     }
-// };
-
-// Setup middleware that checks if user is logged in and redirects to their profile
 let checkLoggedIn = (req, res, next) => {
-    if (req.cookies.userCookie && req.session.user) {
+    console.log(`cookie: ${req.cookies.userCookie}`);
+    console.log(`user: ${req.session.user}`);
+
+    if (req.session.user && req.cookies.userCookie) {
         console.log('checkLoggedIn found that user was already logged in.');
         res.redirect('/profile');
+    } else {
+        console.log('checkLoggedIn found that user is new here.');
+        next();
     }
-    console.log('checkLoggedIn found that user is new here.');
-    next();
 };
-
 
 // Render profile page
 app.get('/profile', (req, res) => {
-    console.log('cookie id is: ', req.cookies.userCookie)
-    console.log(req.session.user)
+    console.log('cookie:', req.cookies.userCookie)
+    console.log('user:', req.session.user)
     if (req.session.user && req.cookies.userCookie) {
       res.render('profile', {
         user: req.session.user
@@ -142,6 +131,8 @@ app.route('/register')
         res.render('register');
     })
     .post((req, res) => {
+        bcrypt.hash(req.body.password, 11).then((hashedPassword) => {
+
         User.create({
                 username: req.body.username,
                 password: req.body.password
@@ -154,6 +145,9 @@ app.route('/register')
                 console.log(`Something went wrong when registering: ${error}`);
                 res.redirect('/register');
             });
+        }).catch((error) => {
+            console.log(`Something went wrong when hashing password ${error}`)
+        })
     });
 
 // Route for logging in, checks if there is a user with that password, if correct, it will redirect to profile
@@ -174,14 +168,25 @@ app.route('/login')
                 }
             })
             .then((retrievedUser) => {
-                req.session.user = retrievedUser.dataValues;
-                res.redirect('/profile');
+                bcrypt.compare(password, retrievedUser.dataValues.password).then((result) => {
+                    if (!result) {
+                        console.log(`Error: Password does not match`);
+                        res.render('error');
+                    } else {
+                        req.session.user = retrievedUser.dataValues;
+                        console.log('Session user:', req.session.user);
+                        res.redirect('/profile')
+                    }
+                }).catch((error) => {
+                    `Something went wrong when comparing password`
+                    res.render('error');
+                })
             })
             .catch((error) => {
                 console.log(`Something went wrong when logging in: ${error}`);
                 res.render('error');
             });
-    });
+    })
 
 // Route for logging out, clear the cookie
 app.get('/logout', (req, res) => {
