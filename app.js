@@ -22,7 +22,11 @@ const express = require('express'),
     User = Models.User,
     Post = Models.Post,
     Comment = Models.Comment,
-    bcrypt = require('bcrypt');
+    bcrypt = require('bcrypt'),
+    {
+        check,
+        validationResult
+    } = require('express-validator/check');
 
 const port = process.env.PORT || 3000;
 
@@ -130,12 +134,13 @@ app.route('/register')
     .get(checkLoggedIn, (req, res) => {
         res.render('register');
     })
+
     .post((req, res) => {
         bcrypt.hash(req.body.password, 11).then((hashedPassword) => {
 
         User.create({
                 username: req.body.username,
-                password: req.body.password
+                password: hashedPassword
             })
             .then((retrievedUser) => {
                 req.session.user = retrievedUser.dataValues;
